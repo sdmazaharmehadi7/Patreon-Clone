@@ -10,7 +10,8 @@ import User from '@/models/User';
 import Payment from '@/models/Payment';
  
 
-export const authoptions =  NextAuth({
+export const authoptions = NextAuth({
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
       GitHubProvider({
         clientId: process.env.GITHUB_ID,
@@ -49,14 +50,19 @@ export const authoptions =  NextAuth({
         return token
       },
       async session({ session, token }) {
-        await connectDb()
-        const dbUser = await User.findOne({ email: session.user.email })
-        if (dbUser) {
-          session.user.name = dbUser.username
-          session.user.username = dbUser.username
-        }
-        if (token) {
-          session.user.isNewUser = token.isNewUser
+        if (!session?.user?.email) return session
+        try {
+          await connectDb()
+          const dbUser = await User.findOne({ email: session.user.email })
+          if (dbUser) {
+            session.user.name = dbUser.username
+            session.user.username = dbUser.username
+          }
+          if (token) {
+            session.user.isNewUser = token.isNewUser
+          }
+        } catch (error) {
+          console.error("Session callback error:", error)
         }
         return session
       },

@@ -31,30 +31,28 @@ const Dashboard = () => {
     }
 
     const handleSubmit = async (e) => {
-
         let a = await updateProfile(e, session.user.name)
-        toast('Profile Updated', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
+        if (a?.error) {
+            toast.error(a.error, {
+                toastId: "profile-error",
+                autoClose: 4000,
+                closeOnClick: true,
+            })
+            return
+        }
+        toast.success('Profile Updated', {
+            toastId: "profile-updated",
+            autoClose: 3000,
             closeOnClick: true,
             pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-            });
+        });
     }
-
-
-
-
 
     return (
         <>
             <ToastContainer
                 position="top-right"
-                autoClose={5000}
+                autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -62,10 +60,8 @@ const Dashboard = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="light"
+                theme="dark"
             />
-            {/* Same as */}
-            <ToastContainer />
             <div className='container mx-auto py-5 px-6 '>
                 <h1 className='text-center my-5 text-3xl font-bold'>Welcome to your Dashboard</h1>
 

@@ -25,31 +25,21 @@ const PaymentPage = ({ username }) => {
 
     useEffect(() => {
         if(searchParams.get("paymentdone") == "true"){
-            toast('Thanks for your donation!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
+            toast.success('Thanks for your donation!', {
+                toastId: "payment-done",
+                autoClose: 4000,
                 closeOnClick: true,
                 pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
             });
-            router.push(`/${username}`)
+            router.replace(`/${username}`)
         } else if(searchParams.get("paymentfailed") == "true"){
             toast.error('Payment verification failed!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
+                toastId: "payment-failed",
+                autoClose: 4000,
                 closeOnClick: true,
                 pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
             });
-            router.push(`/${username}`)
+            router.replace(`/${username}`)
         }
     }, [searchParams])
     
@@ -113,7 +103,7 @@ const PaymentPage = ({ username }) => {
         <>
             <ToastContainer
                 position="top-right"
-                autoClose={5000}
+                autoClose={4000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -121,9 +111,8 @@ const PaymentPage = ({ username }) => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="light" />
-            {/* Same as */}
-            <ToastContainer />
+                theme="dark"
+            />
             <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
 
 
